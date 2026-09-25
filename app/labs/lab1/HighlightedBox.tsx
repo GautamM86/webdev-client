@@ -1,27 +1,93 @@
-function Box({ children, style, id }: { children: React.ReactNode; style?: React.CSSProperties; id?: string }) {
-  return <div id={id} style={style}>{children}</div>;
+import type { ReactNode } from "react";
+
+function HighlightedBox({
+  backgroundColor = "lightyellow",
+  borderColor = "orange",
+  borderWidth = 2,
+  borderRadius = 8,
+  children,
+}: {
+  backgroundColor?: string;
+  borderColor?: string;
+  borderWidth?: string | number;
+  borderRadius?: string | number;
+  children?: ReactNode;
+}) {
+  return (
+    <div
+      style={{
+        backgroundColor,
+        borderColor,
+        borderWidth,
+        borderStyle: "solid",
+        borderRadius,
+        padding: "0.75rem 1rem",
+        marginBottom: "0.75rem",
+      }}
+    >
+      {children}
+    </div>
+  );
 }
 
-export default function HighlightedBox() {
+export default function HighlightedBoxLab() {
   return (
-    <div id="wd-highlighted-boxes">
-      <h4>Highlighted Boxes</h4>
-      <Box style={{ backgroundColor: "lightgray", padding: "10px", marginBottom: "10px" }}>
-        <span>Sample nested content</span>
-      </Box>
+    <div id="wd-highlighted-box">
+      <h3>Highlighted Box</h3>
+      <HighlightedBox
+        backgroundColor="lavender"
+        borderColor="purple"
+        borderWidth={3}
+        borderRadius={12}
+      >
+        <h4>Callout</h4>
+        <p>
+          This box wraps <strong>any</strong>{" "}children — headings, paragraphs,
+          lists, and more.
+        </p>
+        <ul>
+          <li>backgroundColor</li>
+          <li>borderColor</li>
+          <li>borderWidth</li>
+          <li>borderRadius</li>
+        </ul>
+      </HighlightedBox>
 
-      <Box id="wd-your-box" style={{ backgroundColor: "lightblue", padding: "15px", border: "2px solid blue", marginBottom: "10px" }}>
-        <h5>My Current Goals</h5>
+      <HighlightedBox
+        backgroundColor="#e8f5e9"
+        borderColor="green"
+        borderWidth={2}
+        borderRadius={20}
+      >
+        <p>
+          A second box with different style props wrapping different content.
+        </p>
+      </HighlightedBox>
+
+      {/* On your own */}
+      <HighlightedBox
+        backgroundColor="lightblue"
+        borderColor="steelblue"
+        borderWidth={3}
+        borderRadius={14}
+      >
+        <h4>Gautam Mahajan</h4>
         <ul>
           <li>Master modular component design in React</li>
           <li>Refine block-based visual logic for Roblox modules</li>
+          <li>Deepen algorithm optimization in Python</li>
         </ul>
-      </Box>
+      </HighlightedBox>
 
-      <Box id="wd-ai-box" style={{ backgroundColor: "mistyrose", padding: "20px", borderRadius: "8px" }}>
-        <strong>Important Note:</strong>
-        <p>This is a sample box containing nested HTML tags to demonstrate component composition.</p>
-      </Box>
+      {/* With AI */}
+      <HighlightedBox backgroundColor="honeydew" borderColor="seagreen">
+        <h4>Sample nested content</h4>
+        <ul>
+          <li>p</li>
+          <li>table</li>
+          <li>form</li>
+        </ul>
+      </HighlightedBox>
     </div>
   );
 }

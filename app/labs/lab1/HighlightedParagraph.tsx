@@ -1,26 +1,68 @@
-function HighlightedParagraphComponent({ text, style, id }: { text: string; style?: React.CSSProperties; id?: string }) {
-  return <p id={id} style={style}>{text}</p>;
+function HighlightedParagraph({
+  text = "This paragraph is highlighted using component props.",
+  backgroundColor = "lightyellow",
+  borderColor = "orange",
+  borderWidth = 2,
+  borderRadius = 8,
+}: {
+  text?: string;
+  backgroundColor?: string;
+  borderColor?: string;
+  borderWidth?: string | number;
+  borderRadius?: string | number;
+}) {
+  return (
+    <p
+      style={{
+        backgroundColor,
+        borderColor,
+        borderWidth,
+        borderStyle: "solid",
+        borderRadius,
+        padding: "0.5rem 0.75rem",
+      }}
+    >
+      {text}
+    </p>
+  );
 }
 
-export default function HighlightedParagraph() {
+export default function HighlightedParagraphLab() {
   return (
     <div id="wd-highlighted-paragraph">
-      <h4>Highlighted Paragraphs</h4>
-      <HighlightedParagraphComponent 
-        text="This is a sample highlighted paragraph component from the book." 
-        style={{ backgroundColor: "yellow", color: "black" }} 
+      <h3>Highlighted Paragraph</h3>
+      <HighlightedParagraph text="Default highlight: light yellow background, orange border." />
+      <HighlightedParagraph
+        text="Custom props: light blue background, navy border, thicker width, more rounding."
+        backgroundColor="lightblue"
+        borderColor="navy"
+        borderWidth={4}
+        borderRadius={16}
       />
-      
-      <HighlightedParagraphComponent 
-        id="wd-your-paragraph" 
-        text="I am currently focusing on algorithm optimization, including Python dictionary frequency mapping." 
-        style={{ backgroundColor: "blue", color: "white", padding: "5px" }} 
+      <HighlightedParagraph
+        text="Another variation: misty rose background, crimson border, square corners."
+        backgroundColor="#ffe4e1"
+        borderColor="crimson"
+        borderWidth="3px"
+        borderRadius="0px"
       />
-      
-      <HighlightedParagraphComponent 
-        id="wd-ai-paragraph" 
-        text="This paragraph demonstrates passing CSS attributes dynamically to a React component." 
-        style={{ backgroundColor: "lightgreen", color: "darkgreen", border: "1px solid green" }} 
+
+      {/* On your own */}
+      <HighlightedParagraph
+        text="I am currently focusing on algorithm optimization, including Python dictionary frequency mapping."
+        backgroundColor="lightcyan"
+        borderColor="teal"
+        borderWidth={3}
+        borderRadius={10}
+      />
+
+      {/* With AI */}
+      <HighlightedParagraph
+        text="Props let the same component render with different colors."
+        backgroundColor="lavender"
+        borderColor="purple"
+        borderWidth={3}
+        borderRadius={12}
       />
     </div>
   );
