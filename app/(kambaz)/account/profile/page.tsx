@@ -9,7 +9,7 @@ export default function Profile() {
       <input defaultValue="Alice" placeholder="First Name" id="wd-firstname" /> <br />
       <input defaultValue="Wonderland" placeholder="Last Name" id="wd-lastname" /> <br />
       <input defaultValue="2000-01-01" id="wd-dob" type="date" /> <br />
-      <input defaultValue="alice@wonderland.com" id="wd-email" type="email" /> <br />
+      <input defaultValue="alice@wonderland" id="wd-email" type="email" /> <br />
       <select defaultValue="FACULTY" id="wd-role">
         <option value="USER">User</option>
         <option value="ADMIN">Admin</option>
