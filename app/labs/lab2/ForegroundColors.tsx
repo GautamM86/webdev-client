@@ -8,7 +8,7 @@ export default function ForegroundColors() {
         <span className="wd-fg-color-green">this text is green</span>
       </p>
       <p className="wd-fg-color-green">
-        This sentence starts green,{" "}
+        As an example, this sentence starts green,{" "}
         <span className="wd-fg-color-red">turns red</span>, and ends green again
       </p>
       <p id="wd-ai-fg" className="wd-fg-color-blue">
