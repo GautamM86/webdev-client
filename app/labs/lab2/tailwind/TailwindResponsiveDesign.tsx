@@ -8,7 +8,7 @@ export default function TailwindResponsiveDesign() {
             <img
               className="h-56 w-full object-cover md:h-full md:min-h-56 md:w-48"
               src="/images/nodejs.jpg"
-              alt="React JS"
+              alt="Node JS"
             />
             <div className="absolute inset-0 flex flex-col items-center justify-center text-white">
               <svg

@@ -12,7 +12,7 @@ export default function Dashboard() {
       >
         <CourseCard
           id="1234"
-          title="Foundations of ReactJS"
+          title="CS1234 Foundations of ReactJS"
           subtitle="Basics of Frontend development"
           image="/images/reactjs.jpg"
         />
