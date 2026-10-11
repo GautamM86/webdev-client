@@ -4,8 +4,8 @@ export default function Labs() {
   return (
     <div id="wd-labs">
       <h1>Labs</h1>
-      <p>Gautam Mahajan</p>
-      <p>CS5610 02</p>
+      <h2>Gautam Mahajan</h2>
+      <p>CS5610 Section 02</p>
       <a id="wd-github" href="https://github.com/GautamM86/webdev-client">
         My GitHub Repository
       </a>

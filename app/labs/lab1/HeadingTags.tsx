@@ -22,7 +22,6 @@ export default function HeadingTags() {
       <h5>h5</h5>
       <h6>h6</h6>
 
-      {/* On your own */}
       <div id="wd-your-heading">
         <h4>Gautam Mahajan</h4>
         I am a Computer Science student focused on algorithm optimization and
@@ -30,11 +29,13 @@ export default function HeadingTags() {
         this course to build full stack web applications end to end.
       </div>
 
-      {/* With AI */}
       <div id="wd-ai-headings">
         <h4>Lab notes</h4>
+        This section collects short notes about the lab.
         <h5>What I built</h5>
+        A summary of the components created in this lab goes here.
         <h6>Next step</h6>
+        The next exercise to work on is described here.
       </div>
     </div>
   );
