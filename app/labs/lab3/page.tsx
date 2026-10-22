@@ -74,8 +74,6 @@ export default function Lab3() {
       <Styles />
       <ClientComponentDemo />
       <ServerComponentDemo />
-      <PathParameters />
-      <TodoList />
       <Add a={3} b={4} />
       <Add a={10} b={20} />
       <Add a={7} b={8} />
@@ -91,6 +89,8 @@ export default function Lab3() {
       <Highlight>I really want to adopt a dog next year.</Highlight>
       <br />
       <Highlight>Children can be any JSX</Highlight>
+      <PathParameters />
+      <TodoList />
     </div>
   );
 }

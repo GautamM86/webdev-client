@@ -1,11 +1,18 @@
+import { ReactNode } from "react";
 import TOC from "./TOC";
-
-export default function LabsLayout({ children }: { children: React.ReactNode }) {
+export default function LabsLayout({
+  children,
+}: Readonly<{ children: ReactNode }>) {
   return (
-    <div>
-      <TOC />
-      <hr />
-      {children}
-    </div>
+    <table>
+      <tbody>
+        <tr>
+          <td valign="top" width="100px">
+            <TOC />
+          </td>
+          <td valign="top">{children}</td>
+        </tr>
+      </tbody>
+    </table>
   );
 }
