@@ -1,8 +1,17 @@
+import Environment from "./Environment";
+import PathParameters from "./PathParameters";
+import QueryParameters from "./QueryParameters";
+import WorkingWithRemoteObjects from "./WorkingWithRemoteObjects";
+import WorkingWithRemoteArrays from "./WorkingWithRemoteArrays";
 export default function Lab5() {
   return (
-    <div>
+    <div id="wd-lab5">
       <h2>Lab 5</h2>
-      <p>Placeholder for future lab content.</p>
+      <Environment />
+      <PathParameters />
+      <QueryParameters />
+      <WorkingWithRemoteObjects />
+      <WorkingWithRemoteArrays />
     </div>
   );
 }
