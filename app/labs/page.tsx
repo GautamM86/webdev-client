@@ -9,6 +9,14 @@ export default function Labs() {
       <a id="wd-github" href="https://github.com/GautamM86/webdev-client">
         My GitHub Repository
       </a>
+      <br />
+      <a id="wd-server-github" href="https://github.com/GautamM86/webdev-server">
+        My Node Server GitHub Repository
+      </a>
+      <br />
+      <a id="wd-server-url" href="https://webdev-server-gvw8.onrender.com">
+        My Node Server on Render
+      </a>
       <ul>
         <li>
           <Link href="/labs/lab1">Lab 1: HTML Examples</Link>
