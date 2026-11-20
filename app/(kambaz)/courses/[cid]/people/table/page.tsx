@@ -1,30 +1,30 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { FaUserCircle } from "react-icons/fa";
+import * as accountClient from "../../../../account/client";
+import * as coursesClient from "../../../client";
 import { emptyUser, type User } from "../../../../account/AccountContext";
-import { useUsersStore } from "../../../../store/usersStore";
-import { useEnrollmentsStore } from "../../../../store/enrollmentsStore";
 export default function PeopleTable() {
   const { cid } = useParams();
   const courseId = typeof cid === "string" ? cid : "";
-  const users = useUsersStore((state) => state.users);
-  const addUser = useUsersStore((state) => state.addUser);
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  const enroll = useEnrollmentsStore((state) => state.enroll);
-  const unenroll = useEnrollmentsStore((state) => state.unenroll);
+  const [users, setUsers] = useState<User[]>([]);
   const [person, setPerson] = useState<User>(emptyUser);
-  const enrolled = users.filter((usr) =>
-    enrollments.some(
-      (enrollment) => enrollment.user === usr._id && enrollment.course === courseId,
-    ),
-  );
-  const addPerson = () => {
+  const loadUsers = async () => {
+    setUsers(await accountClient.findUsersForCourse(courseId));
+  };
+  useEffect(() => {
+    loadUsers();
+  }, [courseId]);
+  const addPerson = async () => {
     if (!person.firstName || !person.lastName) return;
-    const _id = crypto.randomUUID();
-    addUser({ ...person, _id });
-    enroll(_id, courseId);
+    await accountClient.createUserForCourse(courseId, person);
     setPerson(emptyUser);
+    await loadUsers();
+  };
+  const unenrollPerson = async (userId: string) => {
+    await coursesClient.unenrollFromCourse(userId, courseId);
+    await loadUsers();
   };
   return (
     <div id="wd-people-table" className="overflow-x-auto">
@@ -89,7 +89,7 @@ export default function PeopleTable() {
           </tr>
         </thead>
         <tbody>
-          {enrolled.map((user) => (
+          {users.map((user) => (
             <tr key={user._id} className="odd:bg-neutral-50">
               <td className="wd-full-name p-2 text-nowrap">
                 <FaUserCircle className="me-2 inline align-middle text-3xl text-neutral-500" />
@@ -106,7 +106,7 @@ export default function PeopleTable() {
                   type="button"
                   id={`wd-unenroll-person-${user._id}-click`}
                   className="rounded bg-red-600 px-2 py-0.5 text-sm font-medium text-white"
-                  onClick={() => unenroll(user._id, courseId)}
+                  onClick={() => unenrollPerson(user._id)}
                 >
                   Unenroll
                 </button>

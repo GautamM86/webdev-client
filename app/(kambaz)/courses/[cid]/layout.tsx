@@ -19,11 +19,14 @@ export default function CoursesLayout({
   const courses = useCoursesStore((state) => state.courses);
   const setCourses = useCoursesStore((state) => state.setCourses);
   const enrollments = useEnrollmentsStore((state) => state.enrollments);
+  const enrollmentsLoaded = useEnrollmentsStore((state) => state.loaded);
+  const setEnrollments = useEnrollmentsStore((state) => state.setEnrollments);
   const { currentUser } = useAccountContext();
   const course = courses.find((c) => c._id === courseId);
   const [showCourseNav, setShowCourseNav] = useState(true);
   const blocked =
     !!currentUser &&
+    enrollmentsLoaded &&
     !enrollments.some(
       (e) => e.user === currentUser._id && e.course === courseId,
     );
@@ -32,6 +35,11 @@ export default function CoursesLayout({
       client.fetchAllCourses().then(setCourses).catch(() => {});
     }
   }, [course, setCourses]);
+  useEffect(() => {
+    if (!enrollmentsLoaded) {
+      client.fetchAllEnrollments().then(setEnrollments).catch(() => {});
+    }
+  }, [enrollmentsLoaded, setEnrollments]);
   useEffect(() => {
     if (blocked) {
       router.push("/dashboard");

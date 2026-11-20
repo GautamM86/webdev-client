@@ -13,8 +13,7 @@ export default function CourseCard({
 }) {
   const deleteCourse = useCoursesStore((state) => state.deleteCourse);
   const enrollments = useEnrollmentsStore((state) => state.enrollments);
-  const enroll = useEnrollmentsStore((state) => state.enroll);
-  const unenroll = useEnrollmentsStore((state) => state.unenroll);
+  const setEnrollments = useEnrollmentsStore((state) => state.setEnrollments);
   const { currentUser } = useAccountContext();
   const enrolled =
     !!currentUser &&
@@ -24,6 +23,16 @@ export default function CourseCard({
   const onDeleteCourse = async () => {
     await client.deleteCourse(course._id);
     deleteCourse(course._id);
+  };
+  const onEnroll = async () => {
+    if (!currentUser) return;
+    await client.enrollIntoCourse(currentUser._id, course._id);
+    setEnrollments(await client.fetchAllEnrollments());
+  };
+  const onUnenroll = async () => {
+    if (!currentUser) return;
+    await client.unenrollFromCourse(currentUser._id, course._id);
+    setEnrollments(await client.fetchAllEnrollments());
   };
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
@@ -81,7 +90,7 @@ export default function CourseCard({
                 className="ms-2 mt-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
                 onClick={(event) => {
                   event.preventDefault();
-                  unenroll(currentUser._id, course._id);
+                  onUnenroll();
                 }}
               >
                 Unenroll
@@ -93,7 +102,7 @@ export default function CourseCard({
                 className="ms-2 mt-2 inline-flex items-center justify-center rounded bg-green-600 px-3 py-1.5 text-sm font-medium text-white"
                 onClick={(event) => {
                   event.preventDefault();
-                  enroll(currentUser._id, course._id);
+                  onEnroll();
                 }}
               >
                 Enroll

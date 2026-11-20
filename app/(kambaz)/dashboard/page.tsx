@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
 import * as client from "../courses/client";
 import { useAccountContext } from "../account/AccountContext";
+import { useEnrollmentsStore } from "../store/enrollmentsStore";
 import {
   emptyCourse,
   useCoursesStore,
@@ -13,10 +14,15 @@ export default function Dashboard() {
   const setCourses = useCoursesStore((state) => state.setCourses);
   const addCourse = useCoursesStore((state) => state.addCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
+  const enrollments = useEnrollmentsStore((state) => state.enrollments);
+  const setEnrollments = useEnrollmentsStore((state) => state.setEnrollments);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const [showAllCourses, setShowAllCourses] = useState(false);
   const [error, setError] = useState("");
   const { currentUser } = useAccountContext();
+  useEffect(() => {
+    client.fetchAllEnrollments().then(setEnrollments).catch(() => {});
+  }, [setEnrollments]);
   useEffect(() => {
     const load = async () => {
       try {
@@ -30,7 +36,7 @@ export default function Dashboard() {
       }
     };
     load();
-  }, [currentUser, showAllCourses, setCourses]);
+  }, [currentUser, showAllCourses, enrollments, setCourses]);
   const onAddCourse = async () => {
     if (!currentUser) {
       setError("Sign in to add a course.");
@@ -39,6 +45,7 @@ export default function Dashboard() {
     setError("");
     const newCourse = await client.createCourse(course);
     addCourse(newCourse);
+    setEnrollments(await client.fetchAllEnrollments());
   };
   const onUpdateCourse = async () => {
     const saved = await client.updateCourse(course);
