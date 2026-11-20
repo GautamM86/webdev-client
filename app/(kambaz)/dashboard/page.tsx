@@ -1,8 +1,8 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CourseCard from "./CourseCard";
+import * as client from "../courses/client";
 import { useAccountContext } from "../account/AccountContext";
-import { useEnrollmentsStore } from "../store/enrollmentsStore";
 import {
   emptyCourse,
   useCoursesStore,
@@ -10,22 +10,40 @@ import {
 } from "../store/coursesStore";
 export default function Dashboard() {
   const courses = useCoursesStore((state) => state.courses);
+  const setCourses = useCoursesStore((state) => state.setCourses);
   const addCourse = useCoursesStore((state) => state.addCourse);
   const updateCourse = useCoursesStore((state) => state.updateCourse);
-  const enrollments = useEnrollmentsStore((state) => state.enrollments);
   const [course, setCourse] = useState<Course>(emptyCourse);
   const [showAllCourses, setShowAllCourses] = useState(false);
+  const [error, setError] = useState("");
   const { currentUser } = useAccountContext();
-  const visibleCourses =
-    currentUser && !showAllCourses
-      ? courses.filter((c) =>
-          enrollments.some(
-            (enrollment) =>
-              enrollment.user === currentUser._id &&
-              enrollment.course === c._id,
-          ),
-        )
-      : courses;
+  useEffect(() => {
+    const load = async () => {
+      try {
+        if (!currentUser || showAllCourses) {
+          setCourses(await client.fetchAllCourses());
+        } else {
+          setCourses(await client.findMyCourses());
+        }
+      } catch {
+        setCourses([]);
+      }
+    };
+    load();
+  }, [currentUser, showAllCourses, setCourses]);
+  const onAddCourse = async () => {
+    if (!currentUser) {
+      setError("Sign in to add a course.");
+      return;
+    }
+    setError("");
+    const newCourse = await client.createCourse(course);
+    addCourse(newCourse);
+  };
+  const onUpdateCourse = async () => {
+    const saved = await client.updateCourse(course);
+    updateCourse(saved);
+  };
   return (
     <div id="wd-dashboard">
       <div className="flex items-center justify-between">
@@ -48,7 +66,7 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-blue-600 px-3 py-1.5 text-sm font-medium text-white"
           id="wd-add-new-course-click"
-          onClick={() => addCourse(course)}
+          onClick={onAddCourse}
         >
           Add
         </button>
@@ -56,11 +74,16 @@ export default function Dashboard() {
           type="button"
           className="rounded bg-yellow-400 px-3 py-1.5 text-sm font-medium"
           id="wd-update-course-click"
-          onClick={() => updateCourse(course)}
+          onClick={onUpdateCourse}
         >
           Update
         </button>
       </h5>
+      {error && (
+        <p id="wd-dashboard-error" className="rounded bg-red-100 px-3 py-2 text-red-800">
+          {error}
+        </p>
+      )}
       <input
         className="mb-2 mt-2 block w-full max-w-xl rounded border border-neutral-300 px-3 py-1.5"
         value={course.name}
@@ -96,7 +119,7 @@ export default function Dashboard() {
         id="wd-dashboard-courses"
         className="grid grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4"
       >
-        {visibleCourses.map((c) => (
+        {courses.map((c) => (
           <CourseCard
             key={c._id}
             course={c}

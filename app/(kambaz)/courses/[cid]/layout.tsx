@@ -4,6 +4,7 @@ import { useParams, useRouter } from "next/navigation";
 import { FaAlignJustify } from "react-icons/fa6";
 import CourseNavigation from "./Navigation";
 import Breadcrumb from "./Breadcrumb";
+import * as client from "../client";
 import { useCoursesStore } from "../../store/coursesStore";
 import { useEnrollmentsStore } from "../../store/enrollmentsStore";
 import { useAccountContext } from "../../account/AccountContext";
@@ -16,6 +17,7 @@ export default function CoursesLayout({
   const courseId = typeof cid === "string" ? cid : "";
   const router = useRouter();
   const courses = useCoursesStore((state) => state.courses);
+  const setCourses = useCoursesStore((state) => state.setCourses);
   const enrollments = useEnrollmentsStore((state) => state.enrollments);
   const { currentUser } = useAccountContext();
   const course = courses.find((c) => c._id === courseId);
@@ -25,6 +27,11 @@ export default function CoursesLayout({
     !enrollments.some(
       (e) => e.user === currentUser._id && e.course === courseId,
     );
+  useEffect(() => {
+    if (!course) {
+      client.fetchAllCourses().then(setCourses).catch(() => {});
+    }
+  }, [course, setCourses]);
   useEffect(() => {
     if (blocked) {
       router.push("/dashboard");

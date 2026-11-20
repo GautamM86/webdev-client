@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
+import * as client from "../courses/client";
 import { useCoursesStore, type Course } from "../store/coursesStore";
 import { useEnrollmentsStore } from "../store/enrollmentsStore";
 import { useAccountContext } from "../account/AccountContext";
@@ -20,6 +21,10 @@ export default function CourseCard({
     enrollments.some(
       (e) => e.user === currentUser._id && e.course === course._id,
     );
+  const onDeleteCourse = async () => {
+    await client.deleteCourse(course._id);
+    deleteCourse(course._id);
+  };
   return (
     <div className="wd-dashboard-course w-[300px] max-w-full overflow-hidden rounded-lg border border-neutral-200 bg-white shadow-sm">
       <Link
@@ -63,7 +68,7 @@ export default function CourseCard({
             className="ms-2 inline-flex items-center justify-center rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
             onClick={(event) => {
               event.preventDefault();
-              deleteCourse(course._id);
+              onDeleteCourse();
             }}
           >
             Delete

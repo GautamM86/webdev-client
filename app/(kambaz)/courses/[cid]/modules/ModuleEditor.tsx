@@ -1,12 +1,22 @@
 import { useState } from "react";
 import { FaPlus } from "react-icons/fa";
 import { useParams } from "next/navigation";
+import * as client from "../../client";
 import { useModulesStore } from "../../../store/modulesStore";
 export default function ModuleEditor() {
   const { cid } = useParams();
   const [show, setShow] = useState(false);
   const [moduleName, setModuleName] = useState("");
   const addModule = useModulesStore((state) => state.addModule);
+  const onAddModule = async () => {
+    if (!moduleName) return;
+    const created = await client.createModuleForCourse(String(cid), {
+      name: moduleName,
+    });
+    addModule(created);
+    setModuleName("");
+    setShow(false);
+  };
   return (
     <>
       <button
@@ -54,12 +64,7 @@ export default function ModuleEditor() {
               </button>
               <button
                 type="button"
-                onClick={() => {
-                  if (!moduleName) return;
-                  addModule({ name: moduleName, course: String(cid) });
-                  setModuleName("");
-                  setShow(false);
-                }}
+                onClick={onAddModule}
                 className="rounded bg-red-600 px-3 py-1.5 text-sm font-medium text-white"
                 id="wd-add-module-submit"
               >
